@@ -1,0 +1,286 @@
+
+=========================
+REST API & Microservices
+=========================
+
+1) What is distributed application
+
+2) Why we need to go for distributed applications
+
+3) Distributed Technologies
+
+4) Provider Development
+
+5) Testing Using Postman
+
+6) Swagger 
+
+7) Consumer Development
+
+8) Exception Handling
+
+9) Microservices
+
+10) Service Registry
+
+11) Admin Server
+
+12) Zipkin Server
+
+13) API Gateway
+
+14) Ribbon for lbr
+
+15) FeignClient
+
+16) Circuit Breaker
+
+17) Kafka
+
+18) Redis
+
+19) Config Server
+
+20) Security
+
+
+======================
+Types of applications
+======================
+
+
+1) Standalone-app (only one user can access at a time)
+
+2) Web app (Multiple users can access at a time)
+
+3) Distributed app  (webservices)
+
+
+===================================
+What is Distributed application ?
+===================================
+
+=> If one application is communicating with another application then it is called as Distributed application.
+
+			Ex:
+
+				passport <-----------> aadhar
+
+				makemytrip <---------> irctc
+
+				gpay <-----------> banking
+
+
+==========================================
+Why to develop distributed applications ?
+==========================================
+
+=> For code re-usability
+
+=> For loosely coupling
+
+======================================
+Distributed Application Architecture
+======================================
+
+=> In Ditributed applications, 2 actors will be available
+
+1) Provider  : The app which is giving services to other application
+
+		ex: IRCTC
+
+2) Consumer : The app which is accessing services from other application
+
+		ex: MakeMyTrip, Yatra ..
+
+===========================
+What is Intereoperability	
+===========================	
+
+-> Not language specific
+
+-> Not platform specific
+
+-> Irrespective of platform and language if two apps are communicating then those are called as intereoperable applications.
+
+			java ----> .net
+
+			java ----> python
+
+			java ----> Node js
+
+
+Note: To achieve intereoperability we will use xml/json format to transfer data from one application to another application.
+
+=> XML & JSON formats are univeral, all languages will understand these formats.
+
+==========================
+Distributed Technologies
+==========================
+
+1) CORBA
+
+2) RMI
+
+3) EJB
+
+4) SOAP Webservices (Outdated)
+
+		- JAX-RPC
+		- JAX-WS
+
+5) RESTFul Services (Trending)
+
+		- JAX-RS (outdated)
+		- Spring REST  (trending)
+
+
+======
+JSON
+======
+
+=> Java Script Object Notation
+
+=> In Distributed applications we will use JSON as a mediator between Consumer & Provider.
+
+=> JSON is intereoperable
+
+=> JSON is very light weight
+
+=> JSON will represent data in key-value format.
+
+Syntax:
+
+{
+	
+	"id" : 101,
+	"name" : "ashok",
+	"gender" : "male"
+
+}
+
+
+=> To convert java object to json data and json data to java object we will use "Jackson" API.
+
+=> Jackson is a third party library.
+
+=> Jackson api provided "ObjectMapper" class to perform conversions
+
+				
+							jackson api
+			java obj <---------------------> json data
+
+
+			ObjectMapper mapper = new ObjectMapper ( );
+
+			writeValue(object); // convert java obj to json
+
+			readValue(String file);// convert json to java obj
+
+
+
+=============================
+Java with Jackson API Example
+==============================
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.16.1</version>
+		</dependency>
+
+-----------------------------------------------------------------------------------
+
+public class Customer {
+
+	private Integer cid;
+	private String cname;
+	private String cemail;
+
+	// setters & getters
+}
+--------------------------------------------------------------------------------------
+
+public class ConvertObjToJson {
+
+	public static void main(String[] args) throws Exception {
+		
+		// Convert obj to json format
+		Customer c = new Customer(101, "John", "john@gmail.com");
+
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.writeValue(new File("customer.json"), c);
+
+		System.out.println("completed....");
+	}
+}
+
+-------------------------------------------------------------------------------------
+
+public class ConvertJsonToObj {
+	
+	public static void main(String[] args) throws Exception{
+		
+		// json conversion to java obj
+		
+		File f = new File("customer.json");
+		ObjectMapper mapper = new ObjectMapper();
+		Customer customer = mapper.readValue(f, Customer.class);
+		System.out.println(customer);
+		
+	}
+}
+
+========================================
+REST API development using Spring Boot
+========================================
+
+-> We need to use "web-starter" dependency in pom.xml
+
+-> As part of REST API (Provider) development we will use below annotations
+
+
+1) @RestController   : To make our class as distributed component (B2B)
+
+2) @RequestParam : To read query parameters from URL (K-V)
+
+3) @PathVariable : To read path parameters
+
+4) @RequestBody : To read data from request body
+
+5) @GetMapping : To map rest controller method to HTTP GET request
+
+6) @PostMapping : To map rest controller method to HTTP POST request
+
+7) @PutMapping : To map rest controller method to HTTP PUT request
+
+8) @DeleteMapping : To map rest controller method to HTTP DELETE request
+
+----------------------------------------------------------------------------------
+
+@RestController
+public class MsgRestController {
+
+	@GetMapping("/welcome")
+	public String getWelcomeMsg() {
+		String msg = "Welcome to REST API..!!";
+		return msg;
+	}
+
+	@GetMapping("/greet")
+	public String getGreetMsg(@RequestParam("name") String name) {
+		String msg = name + ", Good Morning..!!";
+		return msg;
+	}
+
+}
+
+-----------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
